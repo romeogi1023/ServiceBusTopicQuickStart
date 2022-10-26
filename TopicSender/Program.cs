@@ -12,9 +12,16 @@ const int numOfMessages = 3;
 // The Service Bus client types are safe to cache and use as a singleton for the lifetime
 // of the application, which is best practice when messages are being published or read
 // regularly.
-//TODO: Replace the "<NAMESPACE-CONNECTION-STRING>" and "<TOPIC-NAME>" placeholders.
-client = new ServiceBusClient(
-    "Endpoint=sb://gbttest20221025.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwRSla2cZCncHqLPDzAN35xe0qhFqvSvUGaqo+7dNko=");
+//
+// Set the transport type to AmqpWebSockets so that the ServiceBusClient uses port 443. 
+// If you use the default AmqpTcp, make sure that ports 5671 and 5672 are open.
+var clientOptions = new ServiceBusClientOptions
+{
+    TransportType = ServiceBusTransportType.AmqpWebSockets
+};
+
+// TODO: Replace the <NAMESPACE-CONNECTION-STRING> and <QUEUE-NAME> placeholders
+client = new ServiceBusClient("Endpoint=sb://gbttest20221025.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwRSla2cZCncHqLPDzAN35xe0qhFqvSvUGaqo+7dNko=", clientOptions);
 sender = client.CreateSender("mytopic");
 
 // create a batch 

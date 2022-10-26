@@ -27,10 +27,16 @@ Task ErrorHandler(ProcessErrorEventArgs args)
 // of the application, which is best practice when messages are being published or read
 // regularly.
 //
+// Set the transport type to AmqpWebSockets so that the ServiceBusClient uses port 443. 
+// If you use the default AmqpTcp, make sure that ports 5671 and 5672 are open.
+var clientOptions = new ServiceBusClientOptions
+{
+    TransportType = ServiceBusTransportType.AmqpWebSockets
+};
+
 // Create the clients that we'll use for sending and processing messages.
 // TODO: Replace the <CONNECTION-STRING-VALUE> placeholder
-client = new ServiceBusClient(
-    "Endpoint=sb://gbttest20221025.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwRSla2cZCncHqLPDzAN35xe0qhFqvSvUGaqo+7dNko=");
+client = new ServiceBusClient("Endpoint=sb://gbttest20221025.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwRSla2cZCncHqLPDzAN35xe0qhFqvSvUGaqo+7dNko=", clientOptions);
 
 // create a processor that we can use to process the messages
 // TODO: Replace the <TOPIC-NAME> and <SUBSCRIPTION-NAME> placeholders
